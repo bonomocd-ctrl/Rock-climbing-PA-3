@@ -18,4 +18,5 @@ Tests have been added to ensure the code is computing properly.
 🙌 Author
 
 Created by Carleton Bonomo 🪨 “Climb high, stay strong!”
+
 ![CI Status](https://github.com/<your-username>/<your-repository>/actions/workflows/ci.yml/badge.svg)
