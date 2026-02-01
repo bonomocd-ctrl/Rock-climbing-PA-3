@@ -1,0 +1,54 @@
+name: C++ CI - Visual Studio
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to the main branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # Run the workflow on a Windows runner (Visual Studio)
+
+    steps:
+    # Step 1: Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Step 2: Set up Visual Studio
+    - name: Set up Visual Studio
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: 'latest'  # Or specify a particular version like '2019', '2022', etc.
+
+    # Step 3: Install Doctest (optional, if you need to clone it manually)
+    - name: Install Doctest
+      run: |
+        git clone https://github.com/onqtam/doctest.git
+        cd doctest && mkdir build && cd build
+        cmake ..
+        sudo make install
+
+    # Step 4: Generate Visual Studio project files using CMake
+    - name: Generate Visual Studio project files
+      run: |
+        cmake -S . -B build -G "Visual Studio 16 2019"  # Or "Visual Studio 17 2022" for newer versions
+        # If you need a specific version of Visual Studio, adjust the generator here.
+
+    # Step 5: Build the project using MSBuild
+    - name: Build the project with MSBuild
+      run: |
+        msbuild build/RockClimbingTracker.sln /p:Configuration=Release
+
+    # Step 6: Run unit tests using Doctest (run the tests using the built executable)
+    - name: Run unit tests with Doctest
+      run: |
+        cd build/Release
+        ./RockClimbingTracker.exe --doctest  # Replace with your actual executable name
+
+    # Step 7: Upload test results (optional)
+    - name: Upload test results (if tests fail)
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./build/test-results.txt  # Adjust this path if your tests output results in a different format
