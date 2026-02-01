@@ -6,16 +6,12 @@ project(RockClimbingTracker)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add the source files for your project
+# Add your source files
 add_executable(RockClimbingTracker
-    src/main.cpp  # Your source files
-    src/ClimbingTracker.cpp  # Your other source files
+    src/main.cpp
+    src/ClimbingTracker.cpp
+    # Add other source files here
 )
 
-# Include Doctest (adjust the path if needed)
-include_directories(${CMAKE_SOURCE_DIR}/doctest)
-
-# Add testing support
+# Enable testing (if using Doctest or another testing framework)
 enable_testing()
-
-# Link any libraries or additional configurations
