@@ -1,0 +1,55 @@
+name: C++ CI - MSVC Build
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use the latest Windows runner with MSVC pre-installed
+
+    steps:
+    # Step 1: Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Step 2: Set up MSVC using the setup-msbuild action
+    - name: Set up Visual Studio (MSVC)
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: 'latest'  # Or specify a version like '2019', '2022', etc.
+
+    # Step 3: Install dependencies (Doctest, etc. if needed)
+    - name: Install Doctest (optional, only if you use Doctest from GitHub directly)
+      run: |
+        git clone https://github.com/onqtam/doctest.git
+        cd doctest && mkdir build && cd build
+        cmake ..
+        cmake --build . --target install
+
+    # Step 4: Generate Visual Studio project files with CMake
+    - name: Generate Visual Studio project files with CMake
+      run: |
+        cmake -S . -B build -G "Visual Studio 16 2019"  # Use Visual Studio 2019 generator (or "Visual Studio 17 2022" for VS 2022)
+        # If using Visual Studio 2022, change to "Visual Studio 17 2022"
+        
+    # Step 5: Build the project using MSBuild
+    - name: Build the project using MSBuild
+      run: |
+        msbuild build/RockClimbingTracker.sln /p:Configuration=Release  # Use Release configuration
+        # Adjust to the correct path to your .sln file (replace `RockClimbingTracker.sln` with your actual solution name)
+
+    # Step 6: Run unit tests (if you're using Doctest)
+    - name: Run unit tests with Doctest
+      run: |
+        cd build/Release  # Change to the directory where your executable is
+        .\RockClimbingTracker.exe --doctest  # Run your executable, replace with the actual name
+
+    # Step 7: Upload test results (optional)
+    - name: Upload test results (if tests fail)
+      if: failure()  # Only upload if tests fail
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./build/test-results.txt  # Modify this if your tests produce an XML or other format
