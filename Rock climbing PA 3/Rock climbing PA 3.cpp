@@ -2,7 +2,7 @@
 // Header files
 // ==========================
 //Added doctest for debug tests.
-#ifdef _DEBUG
+#ifdef RUN_TESTS
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #endif
@@ -490,7 +490,7 @@ public:
 // ==========================
 // DOCTEST UNIT TESTS
 // ==========================
-#ifdef _DEBUG
+#ifdef RUN_TESTS
 
 // ==========================
 // CALCULATIONS — total hours
