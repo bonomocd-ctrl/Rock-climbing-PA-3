@@ -20,7 +20,7 @@ jobs:
     - name: Build tests
       shell: cmd
       run: |
-        REM Compile main.cpp in TEST MODE (RUN_TESTS defined)
+        REM Compile Rock-Climbing-PA-3.cpp in TEST MODE (RUN_TESTS defined)
         REM /EHsc = standar C++ exception handling
         REM /std:c++17 standard
 
