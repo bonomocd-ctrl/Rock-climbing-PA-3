@@ -24,7 +24,7 @@ jobs:
         REM /EHsc = standar C++ exception handling
         REM /std:c++17 standard
 
-        cl /nologo /EHsc /std:c++17 /D RUN_TESTS main.cpp /FE:tests.exe
+        cl /nologo /EHsc /std:c++17 /D RUN_TESTS Rock climbing PA 3.cpp /FE:tests.exe
 
     - name: Run tests
       shell: cmd
