@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Add your source files
 add_executable(RockClimbingTracker
     src/main.cpp
-    src/ClimbingTracker.cpp
+    
     # Add other source files here
 )
 
